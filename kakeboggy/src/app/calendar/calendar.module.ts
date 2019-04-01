@@ -7,6 +7,6 @@ import { CalendarComponent } from './calendar/calendar.component';
   imports: [
     CommonModule
   ],
-  exports: [ CalendarModule ]
+  exports: [ CalendarComponent ]
 })
 export class CalendarModule { }

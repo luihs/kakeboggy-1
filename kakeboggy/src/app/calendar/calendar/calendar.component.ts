@@ -11,9 +11,5 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  function obtenFecha() {
-    var x: string; 
-    return x;
-  }
+  
 }
