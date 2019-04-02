@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-importscpt',
   templateUrl: './importscpt.component.html',
-  styleUrls: ['./importscpt.component.sass']
+  styleUrls: ['./importscpt.component.scss']
 })
 export class ImportscptComponent implements OnInit {
 

@@ -5,6 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ImportsModule } from './imports/imports.module';
 import { CalendarModule } from './calendar/calendar.module';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatNativeDateModule, MatMomentDateModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -14,7 +19,11 @@ import { CalendarModule } from './calendar/calendar.module';
     BrowserModule,
     AppRoutingModule,
     ImportsModule,
-    CalendarModule
+    CalendarModule,
+    NgbModule,
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatFormFieldModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';  
 import { animate, state, style, transition, trigger, animation} from   '@angular/animations'
 import { formatDate } from '@angular/common';
 import { registerLocaleData } from '@angular/common';
+import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+
 
 import localeEs from '@angular/common/locales/es'
 
@@ -10,7 +12,7 @@ registerLocaleData(localeEs, 'es');
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.sass'],
+  styleUrls: ['./calendar.component.scss'],
   animations:[
     trigger('detail expand', [
       state('collapsed', style ({ height: '0px', minHeight: '0', display: 'none'})),
@@ -26,11 +28,18 @@ export class CalendarComponent implements OnInit {
   //fecha actual
   today: number = Date.now();
 
-  
-  constructor() { }
+  model: NgbDateStruct;
+  date: {year: number, month: number};
+
+  constructor(private calendar: NgbCalendar) { }
+
+  selectToday() {
+    this.model = this.calendar.getToday();
+  }
 
   ngOnInit() {
     this.cuentaArray()
+    this.selectToday()
   }
   
   cuentaArray() {
