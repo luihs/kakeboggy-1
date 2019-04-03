@@ -23,8 +23,8 @@ registerLocaleData(localeEs, 'es');
 })
 export class CalendarComponent implements OnInit {
   //declaracion de arrays
-  nroDays = [30, 31, 28];
-
+  nroDays = [30, 31, 28, 29];
+  cantDaysOfMonth: any = [];
   //fecha actual
   today: number = Date.now();
 
@@ -37,23 +37,54 @@ export class CalendarComponent implements OnInit {
     this.model = this.calendar.getToday();
   }
 
+  cantdia: number ;
+
   ngOnInit() {
-    this.cuentaArray()
+    this.obtenCantDia()
     this.selectToday()
+    this.toArrayDays()
+    console.log(this.cantDaysOfMonth)
   }
   
-  cuentaArray() {
-    let mes = formatDate(this.today,'MMMM','es','+0430');
-    var cantDays : number  
+  obtenCantDia() {
+    var mes = formatDate(this.today,'MMMM','es','+0430');
+    let dia = formatDate(this.today,'dd','es','+0430');
+    var cantDays : number
+    var days : number    
+    days = +dia;
     switch (mes) {
       case 'enero': 
       case 'marzo':
+      case 'mayo':
+      case 'julio':
+      case 'agosto':
+      case 'octubre':
+      case 'diciembre':
+        cantDays = this.nroDays[1];
         break;
+      case 'febrero':
+        if (days < 28) {
+          cantDays = this.nroDays[2];
+        } else{
+          cantDays = this.nroDays[3];
+        }
+        break;  
       case 'abril':
+      case 'junio':
+      case 'setiembre':
+      case 'noviembre':
         cantDays = this.nroDays[0];
         break;
     }
-    return console.log(cantDays);
+    return this.cantdia = cantDays;
+  }
+
+  toArrayDays(){
+    var x : number;
+    for (let i = 0; i < this.cantdia ; i++) {
+      x = i;
+    }
+    return this.cantDaysOfMonth[x] = x
   }
 
 } 
