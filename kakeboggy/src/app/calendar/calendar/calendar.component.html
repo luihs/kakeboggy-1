@@ -1,17 +1,24 @@
-
-<div class="container">
-  <div class=row>
-    <div class = "col-xl-12" style="background-color: chocolate">
-      <p>La cantidad de días es {{ cantdia }}</p> <br/>
-      <div *ngFor="let i of cantDaysOfMonth" >
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample">
-           {{ for( let x=0; x < cantDaysOfMonth; i++) {
-              <p> x </p>
-           }}}
+<br/>
+<div class = "container">
+  <div class = "row">
+    <div class = "col-xl-12" style="text-align: center">
+      <h2 style="font-family: 'Josefin Sans', sans-serif;"> {{ today | date:'MMMM'}} </h2>
+    </div>  
+  </div>
+<br/>
+  <div class = "row">
+      <div class = "col-sm-4" style=""> 
+        <button type="button" class="btn btn-outline-info">&lt;</button>
+      </div>
+      <div class = "col-sm-3">
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+           *ngFor="let x of cantDaysOfMonth; index as i; trackBy: trackByFn" id="calendario"> 
+          {{ x }}
         </button>
       </div>
-    </div>
+      <div class = "col-sm-4" style="align-content: center">
+        <button (click)="nextMonth()" class="btn btn-outline-info">Next</button>
+        <p>{{ mes }} - tiene {{ next }} dias</p>
+      </div>
   </div>
 </div>
-
-  
