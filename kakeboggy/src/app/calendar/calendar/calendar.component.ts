@@ -69,6 +69,20 @@ export class CalendarComponent implements OnInit {
       localStorage.setItem("mes",mesguardado + "")
     }
     console.log( localStorage.getItem("acceso"))
+
+    /* if (condicion){
+        return a
+        else {
+          return b
+        }
+        return condition ? a : b
+     */ 
+    /* 
+      evalua(){
+        localStorge.setItem("ci", "s")
+        let ac: string = localStorage.getItem("ci"); ac = s
+      }
+      */
   }
 
   /*******************************/
