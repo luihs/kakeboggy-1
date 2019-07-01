@@ -53,9 +53,14 @@ export class CalendarComponent implements OnInit {
     var nextmth: number;
     nextmth = +mesactual + 1;
     var monthstring: string = nextmth + ""
-    localStorage.setItem("acceso","s")
+    localStorage.setItem("acceso","s") 
     let acc: string = localStorage.getItem("acceso")
-    console.log( localStorage.getItem("acceso"))
+    localStorage.setItem("mes1",nextmth + "")
+    if ( mesactual < localStorage.getItem("mes1")){
+
+    } else {
+
+    }
     if (acc == "s"){
       month = this.getDaysofMonth(nextmth, +dayofmonth);
       this.next = month;
@@ -68,7 +73,6 @@ export class CalendarComponent implements OnInit {
       this.mes = this.changeMonthDescription(mesguardado);
       localStorage.setItem("mes",mesguardado + "")
     }
-    console.log( localStorage.getItem("acceso"))
 
     /* if (condicion){
         return a
