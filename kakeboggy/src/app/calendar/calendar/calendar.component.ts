@@ -53,25 +53,24 @@ export class CalendarComponent implements OnInit {
     var nextmth: number;
     nextmth = +mesactual + 1;
     var monthstring: string = nextmth + ""
-    localStorage.setItem("acceso","s") 
-    let acc: string = localStorage.getItem("acceso")
-    localStorage.setItem("mes1",nextmth + "")
-    if ( mesactual < localStorage.getItem("mes1")){
+    sessionStorage.setItem("acceso","s") 
+    let acc: string = sessionStorage.getItem("acceso")
+    
 
-    } else {
-
-    }
     if (acc == "s"){
       month = this.getDaysofMonth(nextmth, +dayofmonth);
       this.next = month;
       this.mes = this.changeMonthDescription(nextmth)
-      localStorage.setItem("acceso", "n")
-      localStorage.setItem("mes",monthstring)
+      sessionStorage.setItem("acceso", "n")
+      sessionStorage.setItem("mes1",nextmth + "")
     }else{
-      var mesguardado: number = +localStorage.getItem("mes") + 1
-       month = this.getDaysofMonth(mesguardado, +dayofmonth);
+      var nextmonth2:number = +sessionStorage.getItem("mes1") + 1 //Agosto -> Sep
+      sessionStorage.setItem("mes2", nextmonth2 + "")//Guardando Sep
+      sessionStorage.setItem("mes1", sessionStorage.getItem("mes2"))
+
+      month = this.getDaysofMonth(mesguardado, +dayofmonth);
       this.mes = this.changeMonthDescription(mesguardado);
-      localStorage.setItem("mes",mesguardado + "")
+      sessionStorage.setItem("mes",mesguardado + "")
     }
 
     /* if (condicion){
@@ -120,6 +119,13 @@ export class CalendarComponent implements OnInit {
         break;
     }
     return cantDays
+  }
+
+  getYearLeap(month: number, day: number){
+    var leapDays : number
+    if (month = 2) {
+      if (day )
+    }
   }
   
   changeMonthDescription(month: number){
