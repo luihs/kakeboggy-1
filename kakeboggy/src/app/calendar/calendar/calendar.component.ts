@@ -5,6 +5,7 @@ import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { Countnum } from 'src/app/model/countnum';
 import { empty } from 'rxjs';
+import { exists } from 'fs';
 
 registerLocaleData(localeEs, 'es');
 
@@ -52,40 +53,31 @@ export class CalendarComponent implements OnInit {
     var dayofmonth = formatDate(this.today,'d','es','+0430');
     var nextmth: number;
     nextmth = +mesactual + 1;
-    var monthstring: string = nextmth + ""
-    sessionStorage.setItem("acceso","s") 
+    //var monthstring: string = nextmth + ""
+    console.log("mes siguiente " + nextmth)
+    this.verifyAccessStorage();
     let acc: string = sessionStorage.getItem("acceso")
-    
-
+    console.log("acceso " + sessionStorage.getItem("acceso"))
     if (acc == "s"){
+      console.log(nextmth)
       month = this.getDaysofMonth(nextmth, +dayofmonth);
       this.next = month;
       this.mes = this.changeMonthDescription(nextmth)
-      sessionStorage.setItem("acceso", "n")
+      this.verifyAccessStorage();
       sessionStorage.setItem("mes1",nextmth + "")
+      console.log("termina")
     }else{
       var nextmonth2:number = +sessionStorage.getItem("mes1") + 1 //Agosto -> Sep
+      console.log(nextmonth2);
       sessionStorage.setItem("mes2", nextmonth2 + "")//Guardando Sep
       sessionStorage.setItem("mes1", sessionStorage.getItem("mes2"))
-
-      month = this.getDaysofMonth(mesguardado, +dayofmonth);
-      this.mes = this.changeMonthDescription(mesguardado);
-      sessionStorage.setItem("mes",mesguardado + "")
-    }
-
-    /* if (condicion){
-        return a
-        else {
-          return b
-        }
-        return condition ? a : b
-     */ 
-    /* 
-      evalua(){
-        localStorge.setItem("ci", "s")
-        let ac: string = localStorage.getItem("ci"); ac = s
+      //month = this.getDaysofMonth(mesguardado, +dayofmonth);
+      this.mes = this.changeMonthDescription(nextmonth2);
+      //sessionStorage.setItem("mes",mesguardado + "")
+      if (nextmonth2 == 12){
+        sessionStorage.setItem("mes1","0")
       }
-      */
+    }
   }
 
   /*******************************/
@@ -121,10 +113,15 @@ export class CalendarComponent implements OnInit {
     return cantDays
   }
 
-  getYearLeap(month: number, day: number){
-    var leapDays : number
-    if (month = 2) {
-      if (day )
+  verifyAccessStorage(){
+    var acceso:string = sessionStorage.getItem("acceso");
+    console.log("string acceso " + acceso)
+    if (acceso == null) {
+      sessionStorage.setItem("acceso", "s");
+    } else if  (acceso = "s"){
+      sessionStorage.setItem("acceso", "n");
+    }else {
+      sessionStorage.setItem("acceso", "n");
     }
   }
   
