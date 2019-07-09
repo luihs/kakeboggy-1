@@ -2,7 +2,7 @@
 <div class = "container">
   <div class = "row">
     <div class = "col-xl-12" style="text-align: center">
-      <h2 style="font-family: 'Josefin Sans', sans-serif;"> {{ today | date:'MMMM'}} </h2>
+      <h2 style="font-family: 'Josefin Sans', sans-serif;"> {{ mes }} - {{ year }} </h2>
     </div>  
   </div>
 <br/>
@@ -18,7 +18,7 @@
       </div>
       <div class = "col-sm-4" style="align-content: center">
         <button (click)="nextMonth()" class="btn btn-outline-info">Next</button>
-        <p>{{ mes }} - tiene {{ next }} dias</p>
+        
       </div>
   </div>
 </div>

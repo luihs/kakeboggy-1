@@ -5,7 +5,6 @@ import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { Countnum } from 'src/app/model/countnum';
 import { empty } from 'rxjs';
-import { exists } from 'fs';
 
 registerLocaleData(localeEs, 'es');
 
@@ -28,8 +27,9 @@ export class CalendarComponent implements OnInit {
   lstDays: number;
   today: number = Date.now();
   cantdia: number ;
-  next: number;
+  //next: number;
   mes: string;
+  year: number;
 
   ngOnInit() {
     this.obtenCantDia()
@@ -37,46 +37,47 @@ export class CalendarComponent implements OnInit {
   
   obtenCantDia() {
     var mes = formatDate(this.today,'M','es','+0430');
-    var dia = formatDate(this.today,'d','es','+0430');
+    var mesview = formatDate(this.today, 'MMMM', 'es', '+0430');
+    var yrs = formatDate(this.today, 'yyyy', 'es','+0430');
     var days : number    
-    var x: number
-    days= this.getDaysofMonth(+mes, +dia);
-    for (let i = 1; i <= days; i++) {
-      x = i;
-      this.cantDaysOfMonth.push(x);
-    }
+    this.year = +yrs;
+    var firstword = mesview.substring(0,1);
+    var upperfsword = firstword.toUpperCase();
+    var fixedmoth = upperfsword + mesview.substring(1,);
+    this.mes = fixedmoth
+    days = this.getDaysofMonth(+mes);
+    
+    this.overwriteCalendar(days)
   }
 
   nextMonth(){
     var month : number;
     var mesactual = formatDate(this.today,'M','es','+0430');
-    var dayofmonth = formatDate(this.today,'d','es','+0430');
     var nextmth: number;
     nextmth = +mesactual + 1;
-    //var monthstring: string = nextmth + ""
-    console.log("mes siguiente " + nextmth)
     this.verifyAccessStorage();
     let acc: string = sessionStorage.getItem("acceso")
-    console.log("acceso " + sessionStorage.getItem("acceso"))
+    sessionStorage.setItem('active', 's');
+    
     if (acc == "s"){
-      console.log(nextmth)
-      month = this.getDaysofMonth(nextmth, +dayofmonth);
-      this.next = month;
+      month = this.getDaysofMonth(nextmth);
+      this.overwriteCalendar(month);
       this.mes = this.changeMonthDescription(nextmth)
       this.verifyAccessStorage();
       sessionStorage.setItem("mes1",nextmth + "")
-      console.log("termina")
     }else{
-      var nextmonth2:number = +sessionStorage.getItem("mes1") + 1 //Agosto -> Sep
-      console.log(nextmonth2);
-      sessionStorage.setItem("mes2", nextmonth2 + "")//Guardando Sep
+      var nextmonth2:number = +sessionStorage.getItem("mes1") + 1 
+      sessionStorage.setItem("mes2", nextmonth2 + "")
       sessionStorage.setItem("mes1", sessionStorage.getItem("mes2"))
-      //month = this.getDaysofMonth(mesguardado, +dayofmonth);
       this.mes = this.changeMonthDescription(nextmonth2);
-      //sessionStorage.setItem("mes",mesguardado + "")
       if (nextmonth2 == 12){
         sessionStorage.setItem("mes1","0")
       }
+      if (sessionStorage.getItem("mes1") == "1"){
+       this.year = this.changeYearFunction()
+      }
+      month = this.getDaysofMonth(nextmonth2);
+      this.overwriteCalendar(month) 
     }
   }
 
@@ -84,7 +85,18 @@ export class CalendarComponent implements OnInit {
   /**CALENDAR MODULE OWN METHODS**/
   /*******************************/
 
-  getDaysofMonth(month: number, day: number){
+   overwriteCalendar(day: number){
+     this.cantDaysOfMonth = []
+    var x: number
+    for (let i = 1; i <= day; i++) {
+      x = i;
+      this.cantDaysOfMonth.push(x);
+    }
+    x = 0
+    console.log(this.cantDaysOfMonth)
+  }
+
+  getDaysofMonth(month: number){
     var cantDays : number
     switch (month) {
       case 1: 
@@ -97,10 +109,10 @@ export class CalendarComponent implements OnInit {
         cantDays = this.nroDays[1];
         break;
       case 2:
-        if (day < 28) {
-          cantDays = this.nroDays[2];
+        if (sessionStorage.getItem('active') == 's') {
+          cantDays = this.leapyear(+sessionStorage.getItem('year'))
         } else{
-          cantDays = this.nroDays[3];
+          cantDays = this.leapyear(+formatDate(this.today,'yyyy','es','+0430'))
         }
         break;  
       case 4:
@@ -115,7 +127,6 @@ export class CalendarComponent implements OnInit {
 
   verifyAccessStorage(){
     var acceso:string = sessionStorage.getItem("acceso");
-    console.log("string acceso " + acceso)
     if (acceso == null) {
       sessionStorage.setItem("acceso", "s");
     } else if  (acceso = "s"){
@@ -170,7 +181,34 @@ export class CalendarComponent implements OnInit {
     return descr
   }
 
-  overwriteCalendar(month: number, day: number){
+  changeYearFunction(){
+    var thisyear  = formatDate(this.today, 'yyyy', 'es', '+0430');
+    var yearplus: number;
+    
+    if (sessionStorage.getItem('year') == null){
+      var yearone = +thisyear + 1;
+      sessionStorage.setItem('year', yearone + '')
+      return yearone;
+    } else {
+      yearplus = +sessionStorage.getItem("year") + 1        
+      sessionStorage.setItem('year', yearplus + '')
+      return yearplus;
+    }
+  }
+
+  leapyear(year : number){
+    var yearcheck: number;
+    yearcheck = +sessionStorage.getItem("year")
+    if ((yearcheck % 4 === 0 && yearcheck % 100 !== 0) || (yearcheck % 100 === 0 && yearcheck % 400 === 0)) {
+      console.log("es biciesto " + yearcheck)
+      return this.nroDays[3]
+    } else {
+      return this.nroDays[2]
+    }
+  }
+
+  backToCurrentDate(){
 
   }
 } 
+ 
