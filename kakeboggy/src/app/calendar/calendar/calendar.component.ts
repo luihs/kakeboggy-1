@@ -46,13 +46,14 @@ export class CalendarComponent implements OnInit {
     var fixedmoth = upperfsword + mesview.substring(1,);
     this.mes = fixedmoth
     days = this.getDaysofMonth(+mes);
-    
+    sessionStorage.setItem('mes1', mes);
+    sessionStorage.setItem('year', yrs);
     this.overwriteCalendar(days)
   }
 
   nextMonth(){
     var month : number;
-    var mesactual = formatDate(this.today,'M','es','+0430');
+    var mesactual = sessionStorage.getItem('mes1');
     var nextmth: number;
     nextmth = +mesactual + 1;
     this.verifyAccessStorage();
@@ -81,6 +82,29 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+  previousMoth(){
+
+    if (sessionStorage.getItem('mes1') == '0'){
+      sessionStorage.setItem('mes1', '12');
+      
+    }else if (sessionStorage.getItem('mes1') == '1'){
+      sessionStorage.setItem('mes1', '13');
+      sessionStorage.setItem('year', +sessionStorage.getItem('year') -1 + '')
+    }
+
+    var month: string = sessionStorage.getItem('mes1')
+    var m = +month - 1
+
+    var prevDays = this.getDaysofMonth(m);
+    var strMonth = this.changeMonthDescription(m);
+
+    //Set to view component
+    this.mes = strMonth
+    this.overwriteCalendar(prevDays)
+    sessionStorage.setItem('mes1', m +'')
+    console.log(m)
+  }
+
   /*******************************/
   /**CALENDAR MODULE OWN METHODS**/
   /*******************************/
@@ -93,7 +117,6 @@ export class CalendarComponent implements OnInit {
       this.cantDaysOfMonth.push(x);
     }
     x = 0
-    console.log(this.cantDaysOfMonth)
   }
 
   getDaysofMonth(month: number){
@@ -197,10 +220,8 @@ export class CalendarComponent implements OnInit {
   }
 
   leapyear(year : number){
-    var yearcheck: number;
-    yearcheck = +sessionStorage.getItem("year")
-    if ((yearcheck % 4 === 0 && yearcheck % 100 !== 0) || (yearcheck % 100 === 0 && yearcheck % 400 === 0)) {
-      console.log("es biciesto " + yearcheck)
+    if ((year % 4 === 0 && year % 100 !== 0) || (year % 100 === 0 && year % 400 === 0)) {
+      console.log("es biciesto " + year)
       return this.nroDays[3]
     } else {
       return this.nroDays[2]
