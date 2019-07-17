@@ -67,13 +67,15 @@ export class CalendarComponent implements OnInit {
       this.verifyAccessStorage();
       sessionStorage.setItem("mes1",nextmth + "")
     }else{
+      var checkmonth: number = +sessionStorage.getItem('mes1')
+      if (checkmonth == 12){
+        sessionStorage.setItem("mes1","0")
+      }
       var nextmonth2:number = +sessionStorage.getItem("mes1") + 1 
       sessionStorage.setItem("mes2", nextmonth2 + "")
       sessionStorage.setItem("mes1", sessionStorage.getItem("mes2"))
       this.mes = this.changeMonthDescription(nextmonth2);
-      if (nextmonth2 == 12){
-        sessionStorage.setItem("mes1","0")
-      }
+      
       if (sessionStorage.getItem("mes1") == "1"){
        this.year = this.changeYearFunction()
       }
@@ -100,7 +102,8 @@ export class CalendarComponent implements OnInit {
 
     //Set to view component
     this.mes = strMonth
-    this.overwriteCalendar(prevDays)
+    this.overwriteCalendar(prevDays);
+    this.year = +sessionStorage.getItem('year');
     sessionStorage.setItem('mes1', m +'')
     console.log(m)
   }
